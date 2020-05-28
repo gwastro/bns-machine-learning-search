@@ -8,7 +8,9 @@ from pycbc.psd import aLIGOZeroDetHighPower
 from pycbc.noise.reproduceable import colored_noise
 from pycbc.filter import resample_to_delta_t
 
-def generate(file_path, duration, seed=0, signal_separation=200, signal_separation_interval=20, min_mass=1.2, max_mass=1.6, f_lower=20, srate=4096, padding=256, tstart=0):
+def generate(file_path, duration, seed=0, signal_separation=200,
+             signal_separation_interval=20, min_mass=1.2, max_mass=1.6,
+             f_lower=20, srate=4096, padding=256, tstart=0):
     """Function that generates test data with injections.
     
     Arguments
@@ -47,6 +49,7 @@ def generate(file_path, duration, seed=0, signal_separation=200, signal_separati
     
     size = (duration // signal_separation)
     
+    #Generate injection times
     random_time_samples = int(round(float(signal_separation_interval) * float(srate)))
     signal_separation_samples = int(round(float(signal_separation) * float(srate)))
     time_samples = randint(signal_separation_samples - random_time_samples, signal_separation_samples + random_time_samples, size=size)
@@ -56,6 +59,7 @@ def generate(file_path, duration, seed=0, signal_separation=200, signal_separati
     times = times[np.where(np.logical_and(times > padding, times < duration - padding))[0]]
     size = len(times)
     
+    #Generate parameters
     cphase = uniform(0, np.pi*2.0, size=size)
     
     ra = uniform(0, 2 * np.pi, size=size)
@@ -67,6 +71,7 @@ def generate(file_path, duration, seed=0, signal_separation=200, signal_separati
     m1 = uniform(min_mass, max_mass, size=size)
     m2 = uniform(min_mass, max_mass, size=size)
     
+    #Save parameters to file.
     stat_file_path, ext = os.path.splitext(file_path)
     stat_file_path = stat_file_path + '_stats' + ext
     with h5py.File(stat_file_path, 'w') as f:
@@ -83,6 +88,7 @@ def generate(file_path, duration, seed=0, signal_separation=200, signal_separati
     
     p = aLIGOZeroDetHighPower(2 * int(duration * srate), 1.0/64, f_lower)
     
+    #Generate noise
     data = {}
     for i, ifo in enumerate(['H1', 'L1']):
         data[ifo] = colored_noise(p, int(tstart),
@@ -91,7 +97,7 @@ def generate(file_path, duration, seed=0, signal_separation=200, signal_separati
                                     low_frequency_cutoff=f_lower)
         data[ifo] = resample_to_delta_t(data[ifo], 1.0/srate)
     
-    # make and add waveforms into data
+    # make waveforms and add them into the noise
     for i in range(len(times)):
         hp, hc = get_td_waveform(approximant="TaylorF2",
                                 mass1=m1[i], 
@@ -111,5 +117,7 @@ def generate(file_path, duration, seed=0, signal_separation=200, signal_separati
             ht.prepend_zeros(sample_diff)
             ht.start_time = data[ifo].start_time
             data[ifo] = data[ifo].add_into(ht)
+    
+    #Save the data
     for ifo in ['H1', 'L1']:
         data[ifo].save(file_path, group='%s' % (ifo))
