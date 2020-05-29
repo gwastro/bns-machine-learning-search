@@ -6,7 +6,6 @@ import keras
 import os
 from test_data import generate
 import matplotlib.pyplot as plt
-import h5py
 
 def evaluate_ts_from_generator(network, generator, **kwargs):
     """Returns a SNR and a p-score TimeSeries, by applying the network
@@ -50,7 +49,7 @@ def evaluate_ts_from_generator(network, generator, **kwargs):
     """
     if 'verbose' not in kwargs:
         kwargs['verbose'] = 1
-    if workers not in kwargs:
+    if 'workers' not in kwargs:
         kwargs['workers'] = 0
     res = network.predict_generator(generator, **kwargs)
     
