@@ -56,7 +56,9 @@ python network_application_example.py
 ```
 The script will check if mock-data named 'example_injections.hdf' exists within the working directory. If it does not find such a file it will generate 1024 seconds of mock-data using the generate function of the test_data module described [above](#Generating-test-data). It will then continue to load that data and create a [Keras](https://keras.io/) generator from it. The generator slices the time series into chunks of duration 32 seconds, with a stride of 0.25 seconds. Each chunk is whitened and re-sampled as detailed in [`[1]`](#publication). The generator is a class called 'time_series_generator' contained in the same file and takes any number of time series of equal duration and sample rate as input. It will slice all time series equally.
 The generator is used to apply the network to the data using a sliding window. It is passed alongside the network to the function 'evaluate_ts_from_generator' also contained in the same file. This function applies the network and returns two time series, one interpreted as containing an estimate of the signal-to-noise ratio at every window position and one interpreted as containing a p-score at every window position. Finally, the two time series are saved to files named 'snr_time_series.hdf' and 'p-score_time_series.hdf', the results are plotted and the graphs are stored to a file named 'example_results.png'. The resulting plot should look the same or similar to the plot shown below.
+
 ![](basic_results.png)
+
 This script explicitly does not generate events. To generate events, one would need to apply a threshold and cluster the positions that exceed the given threshold as detailed in [`[1]`](#publication).
 
 ## Requirements
