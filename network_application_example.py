@@ -312,6 +312,7 @@ def main():
     #Generate and load data
     file_path = 'example_injections.hdf'
     if not os.path.isfile(file_path):
+        print("Generating injections...")
         generate(file_path, 1024)
     L1 = load_timeseries(file_path, group='L1')
     H1 = load_timeseries(file_path, group='H1')
@@ -325,7 +326,17 @@ def main():
     psc_ts.save('p-score_time_series.hdf')
     
     #Plot the two resulting time series
-    plt.plot(snr_ts.sample_times,  snr_ts)
+    fig, axs = plt.subplots(2)
+    axs[0].plot(snr_ts.sample_times, snr_ts)
+    axs[0].grid()
+    axs[0].set_xlabel('Time in s')
+    axs[0].set_ylabel('predicted SNR')
+    axs[1].plot(psc_ts.sample_times, psc_ts)
+    axs[1].grid()
+    axs[1].set_xlabel('Time in s')
+    axs[1].set_ylabel('predicted p-score')
+    fig.subplots_adjust(hspace=0.5)
+    plt.savefig('example_results.png')
     plt.show()
 
 if __name__ == "__main__":
