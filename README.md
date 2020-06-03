@@ -2,7 +2,7 @@
 Marlin B. Schäfer<sup>1, 2</sup>, Frank Ohme<sup>1, 2</sup>, Alexander H. Nitz<sup>1, 2</sup>
 
  <sub>1. [Albert-Einstein-Institut, Max-Planck-Institut for Gravitationsphysik, D-30167 Hannover, Germany](http://www.aei.mpg.de/obs-rel-cos)</sub>  
- <sub>2. Leibniz Universitat Hannover, D-30167 Hannover, Germany</sub>
+ <sub>2. Leibniz Universität Hannover, D-30167 Hannover, Germany</sub>
 
 ## Introduction
 As two neutron stars merge, they emit gravitational waves that can potentially be detected by earth bound detectors. Matched-filtering based algorithms have traditionally been used to extract quiet signals embedded in noise. We introduce a novel neural-network based machine learning algorithm that uses time series strain data from gravitational-wave detectors to detect signals from non-spinning binary neutron star mergers. For the Advanced LIGO design sensitivity, our network has an average sensitive
@@ -15,7 +15,7 @@ This repository contains three files and an image. It is supplementary material 
 
 
 ## Generating test data
-To generate a mock gravitational-wave data set, we provide a function called 'generate' within the 'test_data.py' module. To use it from the command line navigate to the folder where the module is contained and open a terminal where the [required packages](#Requirements) are accessible. An example usecase would be
+To generate a mock gravitational-wave data set, we provide a function called 'generate' within the 'test_data.py' module. To use it from the command line navigate to the folder where the module is contained and open a terminal where the [required packages](#Requirements) are accessible. An example use case would be
 ```
 >>> from test_data import generate
 >>> file_name = 'example_file.hdf'
@@ -73,5 +73,22 @@ All code was created and tested with the following software configuration:
  * h5py version 2.8.0
  * Matplotlib version 2.2.3
 
+## Citation
+If you use any of the material here, please cite the paper as
+
+```
+@article{schaefer:2020detection,
+    title={Detection of gravitational-wave signals from binary neutron star mergers using machine learning},
+    author={Marlin B. Schäfer and Frank Ohme and Alexander H. Nitz},
+    year={2020},
+    eprint={2006.01509},
+    archivePrefix={arXiv},
+    primaryClass={astro-ph.HE}
+}
+```
+
+## Acknowledgments
+We acknowledge the Max Planck Gesellschaft and the Atlas cluster computing team at AEI Hannover for support. F.O. was supported by the Max Planck Society’s Independent Research Group Programme.
+
 ## References
-<a name="publication"></a>`[1]`: [Detection of gravitational-wave signals from binary neutron star mergers using machine learning](https://arxiv.org/abs/)
+<a name="publication"></a>`[1]`: [Detection of gravitational-wave signals from binary neutron star mergers using machine learning](https://arxiv.org/abs/2006.01509)
